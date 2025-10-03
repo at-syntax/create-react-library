@@ -33,24 +33,28 @@ interface GenerateProjectOptions {
 
 async function generateProject(options: GenerateProjectOptions) {
   const { targetPath, language } = options;
-  
+
   // Create target directory
   fs.mkdirSync(targetPath, { recursive: true });
-  
+
   // Get template path
   const templatePath = path.join(__dirname, "templates", language);
-  
+
   // Copy and process template files
   await copyTemplate(templatePath, targetPath, options);
 }
 
-async function copyTemplate(templatePath: string, targetPath: string, options: GenerateProjectOptions) {
+async function copyTemplate(
+  templatePath: string,
+  targetPath: string,
+  options: GenerateProjectOptions
+) {
   const files = fs.readdirSync(templatePath, { withFileTypes: true });
-  
+
   for (const file of files) {
     const sourcePath = path.join(templatePath, file.name);
     const destPath = path.join(targetPath, file.name);
-    
+
     if (file.isDirectory()) {
       fs.mkdirSync(destPath, { recursive: true });
       await copyTemplate(sourcePath, destPath, options);
@@ -62,7 +66,10 @@ async function copyTemplate(templatePath: string, targetPath: string, options: G
   }
 }
 
-function replaceTemplateVariables(content: string, options: GenerateProjectOptions): string {
+function replaceTemplateVariables(
+  content: string,
+  options: GenerateProjectOptions
+): string {
   return content
     .replace(/\{\{PACKAGE_NAME\}\}/g, options.slug)
     .replace(/\{\{DESCRIPTION\}\}/g, options.description)
@@ -73,7 +80,10 @@ function replaceTemplateVariables(content: string, options: GenerateProjectOptio
     .replace(/\{\{PACKAGE_MANAGER\}\}/g, options.packageManager);
 }
 
-async function installDependencies(targetPath: string, packageManager: string): Promise<void> {
+async function installDependencies(
+  targetPath: string,
+  packageManager: string
+): Promise<void> {
   return new Promise((resolve, reject) => {
     let command: string;
     let args: string[];
@@ -102,11 +112,13 @@ async function installDependencies(targetPath: string, packageManager: string): 
       stdio: "pipe",
     });
 
-    child.on("close", (code) => {
+    child.on("close", code => {
       if (code === 0) {
         resolve();
       } else {
-        reject(new Error(`${command} ${args.join(" ")} failed with code ${code}`));
+        reject(
+          new Error(`${command} ${args.join(" ")} failed with code ${code}`)
+        );
       }
     });
 
@@ -118,10 +130,10 @@ async function initializeGit(targetPath: string): Promise<void> {
   try {
     // Initialize git repository
     await runCommand("git", ["init"], targetPath);
-    
+
     // Add all files
     await runCommand("git", ["add", "."], targetPath);
-    
+
     // Initial commit
     await runCommand("git", ["commit", "-m", "Initial commit"], targetPath);
   } catch (_error) {
@@ -130,18 +142,24 @@ async function initializeGit(targetPath: string): Promise<void> {
   }
 }
 
-function runCommand(command: string, args: string[], cwd: string): Promise<void> {
+function runCommand(
+  command: string,
+  args: string[],
+  cwd: string
+): Promise<void> {
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, {
       cwd,
       stdio: "pipe",
     });
 
-    child.on("close", (code) => {
+    child.on("close", code => {
       if (code === 0) {
         resolve();
       } else {
-        reject(new Error(`${command} ${args.join(" ")} failed with code ${code}`));
+        reject(
+          new Error(`${command} ${args.join(" ")} failed with code ${code}`)
+        );
       }
     });
 
@@ -281,7 +299,7 @@ async function create(argv: Arguments<any>) {
       name: "slug",
       message: "What is the name of the npm package?",
       initial: basename,
-      validate: (input) =>
+      validate: input =>
         validateNpmPackage(input).validForNewPackages ||
         "Must be a valid npm package name",
     },
@@ -289,21 +307,21 @@ async function create(argv: Arguments<any>) {
       type: "text",
       name: "description",
       message: "What is the description for the package?",
-      validate: (input) => Boolean(input) || "Cannot be empty",
+      validate: input => Boolean(input) || "Cannot be empty",
     },
     "author-name": {
       type: "text",
       name: "authorName",
       message: "What is the name of package author?",
       initial: name,
-      validate: (input) => Boolean(input) || "Cannot be empty",
+      validate: input => Boolean(input) || "Cannot be empty",
     },
     "author-email": {
       type: "text",
       name: "authorEmail",
       message: "What is the email address for the package author?",
       initial: email,
-      validate: (input) =>
+      validate: input =>
         /^\S+@\S+$/.test(input) || "Must be a valid email address",
     },
     "author-url": {
@@ -320,7 +338,7 @@ async function create(argv: Arguments<any>) {
         }
         return url;
       },
-      validate: (input) => /^https?:\/\//.test(input) || "Must be a valid URL",
+      validate: input => /^https?:\/\//.test(input) || "Must be a valid URL",
     },
     "repo-url": {
       type: "text",
@@ -335,7 +353,7 @@ async function create(argv: Arguments<any>) {
 
         return "";
       },
-      validate: (input) => /^https?:\/\//.test(input) || "Must be a valid URL",
+      validate: input => /^https?:\/\//.test(input) || "Must be a valid URL",
     },
     language: {
       type: "select",
@@ -383,8 +401,8 @@ async function create(argv: Arguments<any>) {
           ? question.choices(undefined, argv, question)
           : question.choices;
 
-      if (choices && !choices.some((choice) => choice.value === value)) {
-        valid = `Supported values are - ${choices.map((c) =>
+      if (choices && !choices.some(choice => choice.value === value)) {
+        valid = `Supported values are - ${choices.map(c =>
           chalk.green(c.value)
         )}`;
       }
@@ -456,7 +474,7 @@ async function create(argv: Arguments<any>) {
   } as Answers;
 
   const spinner = ora("Generating template").start();
-  
+
   try {
     await generateProject({
       targetPath: folder,
@@ -477,21 +495,34 @@ async function create(argv: Arguments<any>) {
     await initializeGit(folder);
 
     spinner.succeed("Template generated successfully!");
-    
+
     console.log(`\n✨ Created ${chalk.green(slug)} in ${chalk.blue(folder)}`);
     console.log("\nNext steps:");
     console.log(`  ${chalk.blue("cd")} ${basename}`);
-    
+
     // Show package manager specific commands
-    const runCommand = packageManager === "npm" ? "npm run" : packageManager === "yarn" ? "yarn" : `${packageManager} run`;
-    const testCommand = packageManager === "npm" ? "npm test" : packageManager === "yarn" ? "yarn test" : `${packageManager} test`;
-    
+    const runCommand =
+      packageManager === "npm"
+        ? "npm run"
+        : packageManager === "yarn"
+          ? "yarn"
+          : `${packageManager} run`;
+    const testCommand =
+      packageManager === "npm"
+        ? "npm test"
+        : packageManager === "yarn"
+          ? "yarn test"
+          : `${packageManager} test`;
+
     console.log(`  ${chalk.blue(runCommand)} build`);
     console.log(`  ${chalk.blue(testCommand)}`);
     console.log(`\nHappy coding! 🚀`);
   } catch (error) {
     spinner.fail("Failed to generate template");
-    console.error(chalk.red("\nError:"), error instanceof Error ? error.message : error);
+    console.error(
+      chalk.red("\nError:"),
+      error instanceof Error ? error.message : error
+    );
     process.exit(1);
   }
 }
@@ -522,7 +553,7 @@ async function main() {
     .strict().argv;
 }
 
-main().catch((error) => {
+main().catch(error => {
   console.error(chalk.red("Fatal error:"), error);
   process.exit(1);
 });
