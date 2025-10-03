@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from "react";
 
 export interface MyComponentProps {
   children?: ReactNode;
@@ -8,9 +8,13 @@ export interface MyComponentProps {
 /**
  * A simple React component
  */
-const MyComponent: React.FC<MyComponentProps> = ({ children, className, ...props }) => {
+const MyComponent: React.FC<MyComponentProps> = ({
+  children,
+  className,
+  ...props
+}) => {
   return (
-    <div className={`my-component ${className || ''}`} {...props}>
+    <div className={`my-component ${className || ""}`} {...props}>
       <h2>{{PACKAGE_NAME}}</h2>
       <p>{{DESCRIPTION}}</p>
       {children}
