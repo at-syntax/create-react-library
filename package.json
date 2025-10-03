@@ -1,7 +1,27 @@
 {
-  "name": "create-react-library",
+  "name": "@saikat737/create-react-library",
   "version": "1.0.0",
-  "description": "",
+  "description": "A CLI tool to scaffold React libraries with TypeScript and JavaScript templates",
+  "keywords": [
+    "react",
+    "library",
+    "cli",
+    "scaffold",
+    "typescript",
+    "javascript",
+    "create",
+    "generator",
+    "boilerplate"
+  ],
+  "homepage": "https://github.com/at-syntax/create-react-library#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/at-syntax/create-react-library.git"
+  },
+  "bugs": {
+    "url": "https://github.com/at-syntax/create-react-library/issues"
+  },
+  "author": "Saikat Samanta <contact@saikatsamanta.dev>",
   "exports": {
     "import": "./lib/tsc/index.js",
     "require": "./lib/index.js"
@@ -14,37 +34,47 @@
   },
   "files": [
     "lib",
-    "templates"
+    "bin"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "type-check": "tsc --noEmit",
     "type-check:watch": "yarn type-check -- --watch",
-    "build": "rimraf lib && yarn build:js && yarn build:types",
-    "build:js": "babel --extensions .ts,.tsx src --out-dir lib --ignore '**/__tests__/**' --source-maps",
+    "build": "rimraf lib && yarn build:js && yarn build:types && yarn copy:templates",
+    "build:js": "babel --extensions .ts,.tsx src --out-dir lib --ignore '**/__tests__/**' --ignore '**/templates/**' --source-maps",
     "build:types": "tsc --emitDeclarationOnly",
-    "clean": "rimraf node_modules lib"
+    "copy:templates": "cp -r src/templates lib/",
+    "clean": "rimraf node_modules lib",
+    "lint": "eslint 'src/**/*.{ts,tsx}' --ignore-pattern 'src/templates/**'",
+    "lint:fix": "eslint 'src/**/*.{ts,tsx}' --ignore-pattern 'src/templates/**' --fix",
+    "format": "prettier --write 'src/**/*.{ts,tsx,json,md}'",
+    "format:check": "prettier --check 'src/**/*.{ts,tsx,json,md}'"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "prompts": "^2.4.2",
-    "yargs": "^17.7.2",
-    "validate-npm-package-name": "^5.0.0",
-    "github-username": "^6.0.0",
-    "chalk": "^4.1.2",
-    "ora": "^5.4.1"
+    "yargs": "^18.0.0",
+    "validate-npm-package-name": "^6.0.2",
+    "github-username": "^9.0.0",
+    "chalk": "^5.6.2",
+    "ora": "^9.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.22.5",
-    "@babel/core": "^7.22.5",
-    "@types/prompts": "^2.4.4",
-    "@types/yargs": "^17.0.24",
-    "@types/validate-npm-package-name": "^4.0.0",
-    "@babel/preset-typescript": "^7.22.5",
-    "@babel/preset-env": "^7.22.5",
-    "typescript": "^5.0.2",
-    "rimraf": "^5.0.1"
+    "@babel/cli": "^7.28.3",
+    "@babel/core": "^7.28.4",
+    "@types/prompts": "^2.4.9",
+    "@types/yargs": "^17.0.33",
+    "@types/validate-npm-package-name": "^4.0.2",
+    "@babel/preset-typescript": "^7.27.1",
+    "@babel/preset-env": "^7.28.3",
+    "typescript": "^5.9.2",
+    "rimraf": "^6.0.1",
+    "eslint": "^9.36.0",
+    "@eslint/js": "^9.36.0",
+    "@types/eslint__js": "^9.14.0",
+    "typescript-eslint": "^8.45.0",
+    "prettier": "^3.3.3",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-config-prettier": "^10.1.8"
   }
 }

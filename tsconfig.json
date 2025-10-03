@@ -10,7 +10,10 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "lib": ["esnext", "dom"],
+    "lib": [
+      "esnext",
+      "dom"
+    ],
     "module": "esnext",
     "sourceMap": true,
     "declarationMap": true,
@@ -26,7 +29,13 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "types": []
   },
-  "exclude": [".eslintrc.js", "node_modules", "lib"]
+  "exclude": [
+    "eslint.config.cjs",
+    "node_modules",
+    "lib",
+    "src/templates"
+  ]
 }

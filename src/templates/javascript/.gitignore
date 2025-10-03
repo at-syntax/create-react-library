@@ -5,8 +5,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Production builds
-lib/
-dist/
+/lib
+/dist
 *.tgz
 
 # Coverage directory used by tools like istanbul
@@ -56,6 +56,3 @@ pids
 .env.development.local
 .env.test.local
 .env.production.local
-
-# TypeScript
-*.tsbuildinfo

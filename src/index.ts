@@ -1,6 +1,7 @@
 import path from "path";
 import fs from "fs";
-import yargs from "yargs";
+import yargs, { type Arguments, type Options } from "yargs";
+import { hideBin } from "yargs/helpers";
 import chalk from "chalk";
 import { spawn, spawnSync } from "child_process";
 import validateNpmPackage from "validate-npm-package-name";
@@ -15,7 +16,138 @@ type ArgName =
   | "author-email"
   | "author-url"
   | "repo-url"
-  | "language";
+  | "language"
+  | "package-manager";
+
+interface GenerateProjectOptions {
+  targetPath: string;
+  slug: string;
+  description: string;
+  authorName: string;
+  authorEmail: string;
+  authorUrl: string;
+  repoUrl: string;
+  language: "javascript" | "typescript";
+  packageManager: "npm" | "yarn" | "pnpm" | "bun";
+}
+
+async function generateProject(options: GenerateProjectOptions) {
+  const { targetPath, language } = options;
+  
+  // Create target directory
+  fs.mkdirSync(targetPath, { recursive: true });
+  
+  // Get template path
+  const templatePath = path.join(__dirname, "templates", language);
+  
+  // Copy and process template files
+  await copyTemplate(templatePath, targetPath, options);
+}
+
+async function copyTemplate(templatePath: string, targetPath: string, options: GenerateProjectOptions) {
+  const files = fs.readdirSync(templatePath, { withFileTypes: true });
+  
+  for (const file of files) {
+    const sourcePath = path.join(templatePath, file.name);
+    const destPath = path.join(targetPath, file.name);
+    
+    if (file.isDirectory()) {
+      fs.mkdirSync(destPath, { recursive: true });
+      await copyTemplate(sourcePath, destPath, options);
+    } else {
+      const content = fs.readFileSync(sourcePath, "utf8");
+      const processedContent = replaceTemplateVariables(content, options);
+      fs.writeFileSync(destPath, processedContent);
+    }
+  }
+}
+
+function replaceTemplateVariables(content: string, options: GenerateProjectOptions): string {
+  return content
+    .replace(/\{\{PACKAGE_NAME\}\}/g, options.slug)
+    .replace(/\{\{DESCRIPTION\}\}/g, options.description)
+    .replace(/\{\{AUTHOR_NAME\}\}/g, options.authorName)
+    .replace(/\{\{AUTHOR_EMAIL\}\}/g, options.authorEmail)
+    .replace(/\{\{AUTHOR_URL\}\}/g, options.authorUrl)
+    .replace(/\{\{REPO_URL\}\}/g, options.repoUrl)
+    .replace(/\{\{PACKAGE_MANAGER\}\}/g, options.packageManager);
+}
+
+async function installDependencies(targetPath: string, packageManager: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    let command: string;
+    let args: string[];
+
+    switch (packageManager) {
+      case "yarn":
+        command = "yarn";
+        args = ["install"];
+        break;
+      case "pnpm":
+        command = "pnpm";
+        args = ["install"];
+        break;
+      case "bun":
+        command = "bun";
+        args = ["install"];
+        break;
+      default:
+        command = "npm";
+        args = ["install"];
+        break;
+    }
+
+    const child = spawn(command, args, {
+      cwd: targetPath,
+      stdio: "pipe",
+    });
+
+    child.on("close", (code) => {
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error(`${command} ${args.join(" ")} failed with code ${code}`));
+      }
+    });
+
+    child.on("error", reject);
+  });
+}
+
+async function initializeGit(targetPath: string): Promise<void> {
+  try {
+    // Initialize git repository
+    await runCommand("git", ["init"], targetPath);
+    
+    // Add all files
+    await runCommand("git", ["add", "."], targetPath);
+    
+    // Initial commit
+    await runCommand("git", ["commit", "-m", "Initial commit"], targetPath);
+  } catch (_error) {
+    // Git initialization is not critical, so we don't throw
+    console.warn(chalk.yellow("Warning: Git initialization failed"));
+  }
+}
+
+function runCommand(command: string, args: string[], cwd: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, args, {
+      cwd,
+      stdio: "pipe",
+    });
+
+    child.on("close", (code) => {
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error(`${command} ${args.join(" ")} failed with code ${code}`));
+      }
+    });
+
+    child.on("error", reject);
+  });
+}
 
 type Answers = {
   slug: string;
@@ -25,9 +157,10 @@ type Answers = {
   authorUrl: string;
   repoUrl: string;
   language: "javascript" | "typescript";
+  packageManager: "npm" | "yarn" | "pnpm" | "bun";
 };
 
-const args: Record<ArgName, yargs.Options> = {
+const args: Record<ArgName, Options> = {
   slug: {
     description: "Name of the npm package",
     type: "string",
@@ -56,9 +189,14 @@ const args: Record<ArgName, yargs.Options> = {
     description: "Language for the repository",
     type: "string",
   },
+  "package-manager": {
+    description: "Package manager to use",
+    type: "string",
+  },
 };
 
-async function create(argv: yargs.Arguments<any>) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function create(argv: Arguments<any>) {
   if (!argv["package-name"]) {
     console.log(
       `Please specify the package name:\n${chalk.blue(
@@ -128,7 +266,7 @@ async function create(argv: yargs.Arguments<any>) {
     email = spawnSync("git", ["config", "--get", "user.email"])
       .stdout.toString()
       .trim();
-  } catch (e) {
+  } catch (_e) {
     // Ignore error
   }
 
@@ -177,7 +315,7 @@ async function create(argv: yargs.Arguments<any>) {
         try {
           const username = await githubUsername(previous);
           url = `https://github.com/${username}`;
-        } catch (e) {
+        } catch (_e) {
           url = "";
         }
         return url;
@@ -207,6 +345,18 @@ async function create(argv: yargs.Arguments<any>) {
       choices: [
         { title: "Javascript", value: "javascript" },
         { title: "Typescript", value: "typescript" },
+      ],
+    },
+    "package-manager": {
+      type: "select",
+      name: "packageManager",
+      message: "Which package manager would you like to use?",
+      active: "npm",
+      choices: [
+        { title: "npm", value: "npm" },
+        { title: "Yarn", value: "yarn" },
+        { title: "pnpm", value: "pnpm" },
+        { title: "Bun", value: "bun" },
       ],
     },
   };
@@ -263,6 +413,7 @@ async function create(argv: yargs.Arguments<any>) {
     authorUrl,
     repoUrl,
     language,
+    packageManager,
   } = {
     ...argv,
     ...(await prompts(
@@ -304,39 +455,74 @@ async function create(argv: yargs.Arguments<any>) {
     )),
   } as Answers;
 
-  console.log(
-    slug,
-    description,
-    authorName,
-    authorEmail,
-    authorUrl,
-    repoUrl,
-    language
-  );
   const spinner = ora("Generating template").start();
-  spinner.stop();
+  
+  try {
+    await generateProject({
+      targetPath: folder,
+      slug,
+      description,
+      authorName,
+      authorEmail,
+      authorUrl,
+      repoUrl,
+      language,
+      packageManager,
+    });
+
+    spinner.text = "Installing dependencies...";
+    await installDependencies(folder, packageManager);
+
+    spinner.text = "Initializing git repository...";
+    await initializeGit(folder);
+
+    spinner.succeed("Template generated successfully!");
+    
+    console.log(`\n✨ Created ${chalk.green(slug)} in ${chalk.blue(folder)}`);
+    console.log("\nNext steps:");
+    console.log(`  ${chalk.blue("cd")} ${basename}`);
+    
+    // Show package manager specific commands
+    const runCommand = packageManager === "npm" ? "npm run" : packageManager === "yarn" ? "yarn" : `${packageManager} run`;
+    const testCommand = packageManager === "npm" ? "npm test" : packageManager === "yarn" ? "yarn test" : `${packageManager} test`;
+    
+    console.log(`  ${chalk.blue(runCommand)} build`);
+    console.log(`  ${chalk.blue(testCommand)}`);
+    console.log(`\nHappy coding! 🚀`);
+  } catch (error) {
+    spinner.fail("Failed to generate template");
+    console.error(chalk.red("\nError:"), error instanceof Error ? error.message : error);
+    process.exit(1);
+  }
 }
 
-yargs
-  .command("$0 [package-name]", "create a react library", args, create)
-  .demandCommand()
-  .recommendCommands()
-  .fail((message, error) => {
-    console.log("\n");
+async function main() {
+  await yargs(hideBin(process.argv))
+    .command("$0 [package-name]", "create a react library", args, create)
+    .demandCommand()
+    .recommendCommands()
+    .fail((message, error) => {
+      console.log("\n");
 
-    if (error) {
-      console.log(chalk.red(error.message));
-      throw error;
-    }
+      if (error) {
+        console.log(chalk.red(error.message));
+        throw error;
+      }
 
-    if (message) {
-      console.log(chalk.red(message));
-    } else {
-      console.log(
-        chalk.red(`An unknown error occurred. See '--help' for usage guide.`)
-      );
-    }
+      if (message) {
+        console.log(chalk.red(message));
+      } else {
+        console.log(
+          chalk.red(`An unknown error occurred. See '--help' for usage guide.`)
+        );
+      }
 
-    process.exit(1);
-  })
-  .strict().argv;
+      process.exit(1);
+    })
+    .strict().argv;
+}
+
+main().catch((error) => {
+  console.error(chalk.red("Fatal error:"), error);
+  process.exit(1);
+});
