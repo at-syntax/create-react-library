@@ -23,10 +23,10 @@ interface GenerateProjectOptions {
   targetPath: string;
   slug: string;
   description: string;
-  authorName: string;
-  authorEmail: string;
-  authorUrl: string;
-  repoUrl: string;
+  authorName?: string;
+  authorEmail?: string;
+  authorUrl?: string;
+  repoUrl?: string;
   language: "javascript" | "typescript";
   packageManager: "npm" | "yarn" | "pnpm" | "bun";
 }
@@ -53,7 +53,11 @@ async function copyTemplate(
 
   for (const file of files) {
     const sourcePath = path.join(templatePath, file.name);
-    const destPath = path.join(targetPath, file.name);
+    // Rename special files back to their dot-prefixed names in the destination
+    let destName = file.name;
+    if (file.name === "_vscode") destName = ".vscode";
+    if (file.name === "_gitignore") destName = ".gitignore";
+    const destPath = path.join(targetPath, destName);
 
     if (file.isDirectory()) {
       fs.mkdirSync(destPath, { recursive: true });
@@ -73,10 +77,10 @@ function replaceTemplateVariables(
   return content
     .replace(/\{\{PACKAGE_NAME\}\}/g, options.slug)
     .replace(/\{\{DESCRIPTION\}\}/g, options.description)
-    .replace(/\{\{AUTHOR_NAME\}\}/g, options.authorName)
-    .replace(/\{\{AUTHOR_EMAIL\}\}/g, options.authorEmail)
-    .replace(/\{\{AUTHOR_URL\}\}/g, options.authorUrl)
-    .replace(/\{\{REPO_URL\}\}/g, options.repoUrl)
+    .replace(/\{\{AUTHOR_NAME\}\}/g, options.authorName || "")
+    .replace(/\{\{AUTHOR_EMAIL\}\}/g, options.authorEmail || "")
+    .replace(/\{\{AUTHOR_URL\}\}/g, options.authorUrl || "")
+    .replace(/\{\{REPO_URL\}\}/g, options.repoUrl || "")
     .replace(/\{\{PACKAGE_MANAGER\}\}/g, options.packageManager);
 }
 
@@ -150,7 +154,7 @@ function runCommand(
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, {
       cwd,
-      stdio: "pipe",
+      stdio: "ignore",
     });
 
     child.on("close", code => {
@@ -170,10 +174,10 @@ function runCommand(
 type Answers = {
   slug: string;
   description: string;
-  authorName: string;
-  authorEmail: string;
-  authorUrl: string;
-  repoUrl: string;
+  authorName?: string;
+  authorEmail?: string;
+  authorUrl?: string;
+  repoUrl?: string;
   language: "javascript" | "typescript";
   packageManager: "npm" | "yarn" | "pnpm" | "bun";
 };
@@ -312,22 +316,23 @@ async function create(argv: Arguments<any>) {
     "author-name": {
       type: "text",
       name: "authorName",
-      message: "What is the name of package author?",
+      message: "What is the name of package author? (optional)",
       initial: name,
-      validate: input => Boolean(input) || "Cannot be empty",
     },
     "author-email": {
       type: "text",
       name: "authorEmail",
-      message: "What is the email address for the package author?",
+      message: "What is the email address for the package author? (optional)",
       initial: email,
       validate: input =>
-        /^\S+@\S+$/.test(input) || "Must be a valid email address",
+        !input ||
+        /^\S+@\S+$/.test(input) ||
+        "Must be a valid email address if provided",
     },
     "author-url": {
       type: "text",
       name: "authorUrl",
-      message: "What is the URL for the package author?",
+      message: "What is the URL for the package author? (optional)",
       initial: async (previous: string) => {
         let url = "";
         try {
@@ -338,14 +343,20 @@ async function create(argv: Arguments<any>) {
         }
         return url;
       },
-      validate: input => /^https?:\/\//.test(input) || "Must be a valid URL",
+      validate: input =>
+        !input ||
+        /^https?:\/\//.test(input) ||
+        "Must be a valid URL if provided",
     },
     "repo-url": {
       type: "text",
       name: "repoUrl",
-      message: "What is the URL for the repository?",
+      message: "What is the URL for the repository? (optional)",
       initial: (_: string, answers: Answers) => {
-        if (/^https?:\/\/github.com\/[^/]+/.test(answers.authorUrl)) {
+        if (
+          answers.authorUrl &&
+          /^https?:\/\/github.com\/[^/]+/.test(answers.authorUrl)
+        ) {
           return `${answers.authorUrl}/${answers.slug
             .replace(/^@/, "")
             .replace(/\//g, "-")}`;
@@ -353,7 +364,10 @@ async function create(argv: Arguments<any>) {
 
         return "";
       },
-      validate: input => /^https?:\/\//.test(input) || "Must be a valid URL",
+      validate: input =>
+        !input ||
+        /^https?:\/\//.test(input) ||
+        "Must be a valid URL if provided",
     },
     language: {
       type: "select",
