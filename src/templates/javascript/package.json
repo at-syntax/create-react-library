@@ -35,6 +35,7 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "prepublishOnly": "npm run build",
+    "publish": "npm publish",
     "test": "jest",
     "test:watch": "jest --watch"
   },

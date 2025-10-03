@@ -47,6 +47,8 @@
     "format:check": "prettier --check 'src/**/*.{ts,tsx,json,md}'",
     "lint": "eslint 'src/**/*.{ts,tsx}' --ignore-pattern 'src/templates/**'",
     "lint:fix": "eslint 'src/**/*.{ts,tsx}' --ignore-pattern 'src/templates/**' --fix",
+    "prepublishOnly": "npm run build",
+    "publish": "npm publish --access public",
     "test": "echo \"Error: no test specified\" && exit 1",
     "type-check": "tsc --noEmit",
     "type-check:watch": "yarn type-check -- --watch"
