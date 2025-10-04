@@ -1,6 +1,6 @@
 {
   "name": "@saikat737/create-react-library",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A CLI tool to scaffold React libraries with TypeScript and JavaScript templates",
   "keywords": [
     "react",
