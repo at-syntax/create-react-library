@@ -9,13 +9,13 @@ A CLI tool to quickly scaffold React libraries with TypeScript and JavaScript te
 You can use this tool directly with npx (no installation required):
 
 ```bash
-npx @saikat737/create-react-library my-library
+npx @atsyntax/create-react-library my-library
 ```
 
 Or install it globally:
 
 ```bash
-npm install -g @saikat737/create-react-library
+npm install -g @atsyntax/create-react-library
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ npm install -g @saikat737/create-react-library
 Create a new React library:
 
 ```bash
-npx @saikat737/create-react-library my-awesome-library
+npx @atsyntax/create-react-library my-awesome-library
 ```
 
 The CLI will prompt you to choose:

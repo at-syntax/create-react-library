@@ -2,7 +2,7 @@
 
 {{DESCRIPTION}}
 
-## This package is crafted with [@saikat737/create-react-library](https://www.npmjs.com/package/@saikat737/create-react-library)
+## This package is crafted with [@atsyntax/create-react-library](https://www.npmjs.com/package/@atsyntax/create-react-library)
 
 ## Installation
 
