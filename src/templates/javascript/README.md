@@ -2,6 +2,8 @@
 
 {{DESCRIPTION}}
 
+## This package is crafted with [@saikat737/create-react-library](https://www.npmjs.com/package/@saikat737/create-react-library)
+
 ## Installation
 
 ```bash
