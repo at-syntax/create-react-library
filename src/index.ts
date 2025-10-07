@@ -91,23 +91,24 @@ async function installDependencies(
   return new Promise((resolve, reject) => {
     let command: string;
     let args: string[];
+    const isWin = process.platform === "win32";
 
     switch (packageManager) {
       case "yarn":
-        command = "yarn";
-        args = ["install"];
+        command = isWin ? "cmd.exe" : "yarn";
+        args = isWin ? ["/c", "yarn", "install"] : ["install"];
         break;
       case "pnpm":
-        command = "pnpm";
-        args = ["install"];
+        command = isWin ? "cmd.exe" : "pnpm";
+        args = isWin ? ["/c", "pnpm", "install"] : ["install"];
         break;
       case "bun":
-        command = "bun";
-        args = ["install"];
+        command = isWin ? "cmd.exe" : "bun";
+        args = isWin ? ["/c", "bun", "install"] : ["install"];
         break;
       default:
-        command = "npm";
-        args = ["install"];
+        command = isWin ? "cmd.exe" : "npm";
+        args = isWin ? ["/c", "npm", "install"] : ["install"];
         break;
     }
 
@@ -121,9 +122,7 @@ async function installDependencies(
       if (code === 0) {
         resolve();
       } else {
-        reject(
-          new Error(`${command} ${args.join(" ")} failed with code ${code}`)
-        );
+        reject(new Error(`${packageManager} install failed with code ${code}`));
       }
     });
 
