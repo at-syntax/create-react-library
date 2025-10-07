@@ -114,6 +114,7 @@ async function installDependencies(
     const child = spawn(command, args, {
       cwd: targetPath,
       stdio: "pipe",
+      shell: true,
     });
 
     child.on("close", code => {
@@ -155,6 +156,7 @@ function runCommand(
     const child = spawn(command, args, {
       cwd,
       stdio: "ignore",
+      shell: true,
     });
 
     child.on("close", code => {
@@ -258,7 +260,7 @@ async function create(argv: Arguments<any>) {
   }
 
   try {
-    const child = spawn("npx", ["--help"]);
+    const child = spawn("npx", ["--help"], { shell: true });
 
     await new Promise((resolve, reject) => {
       child.once("error", reject);
