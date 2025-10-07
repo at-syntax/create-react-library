@@ -1,0 +1,103 @@
+.App {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 40px;
+}
+
+.App-header h1 {
+  margin: 0 0 10px 0;
+  font-size: 2.5rem;
+}
+
+.App-header p {
+  margin: 0;
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.App-main {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.demo-section {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.demo-section h2 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 2px solid #3178c6;
+  padding-bottom: 10px;
+}
+
+/* Custom styling for the component when used with custom-style class */
+.custom-style {
+  border: 2px solid #3178c6;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.custom-style h2 {
+  color: #3178c6;
+}
+
+.custom-style button {
+  background-color: #3178c6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-style button:hover {
+  background-color: #2563ab;
+}
+
+/* Interactive style for TypeScript example */
+.interactive-style {
+  border: 2px dashed #3178c6;
+  border-radius: 8px;
+  background: rgba(49, 120, 198, 0.1);
+}
+
+.interactive-style h2 {
+  color: #3178c6;
+}
+
+.interactive-style button {
+  background-color: #3178c6;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(49, 120, 198, 0.2);
+}
+
+.interactive-style button:hover {
+  background-color: #2563ab;
+  box-shadow: 0 4px 8px rgba(49, 120, 198, 0.3);
+  transform: translateY(-1px);
+}

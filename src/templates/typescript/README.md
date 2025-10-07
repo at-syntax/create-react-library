@@ -40,6 +40,18 @@ export default App;
 | children | ReactNode | undefined | Content to render inside the component |
 | className | string | undefined | Additional CSS class name |
 
+## Example
+
+Check out the `example/` directory for a complete TypeScript React application demonstrating how to use this library with full type safety:
+
+Note: Build you library first `yarn or npm build`
+
+```bash
+cd example
+npm install
+npm start
+```
+
 ## Development
 
 ```bash

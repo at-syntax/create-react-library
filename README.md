@@ -2,7 +2,16 @@
 
 A CLI tool to quickly scaffold React libraries with TypeScript and JavaScript templates.
 
-## NOTE: This package is currently under development
+## ⚠️ Important Notice
+
+This package is currently in **beta** and under active development. Upcoming versions will include:
+
+- More intuitive template generation
+- Additional templates for licenses
+- GitHub issue and pull request templates
+- Enhanced customization options
+
+Please report any issues or suggestions in our [GitHub repository](https://github.com/at-syntax/create-react-library/issues).
 
 ## Installation
 
@@ -41,6 +50,7 @@ The CLI will prompt you to choose:
 - 📚 ESLint and Prettier configuration
 - 🔧 Rollup bundling setup
 - 📝 Ready-to-use package.json
+- 📱 Example project setup for testing your library
 
 ## Templates
 
@@ -49,12 +59,14 @@ The CLI will prompt you to choose:
 - TypeScript configuration
 - Declaration files generation
 - Modern ES modules support
+- Example project to test your library
 
 ### JavaScript Template
 
 - Babel configuration
 - ES6+ support
 - CommonJS and ES modules support
+- Example project to test your library
 
 ## Contributing
 

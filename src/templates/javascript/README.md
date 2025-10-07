@@ -39,6 +39,18 @@ export default App;
 |------|------|---------|-------------|
 | children | ReactNode | undefined | Content to render inside the component |
 
+## Example
+
+Check out the `example/` directory for a complete React application demonstrating how to use this library:
+
+Note: Build you library first `yarn or npm build`
+
+```bash
+cd example
+npm install
+npm start
+```
+
 ## Development
 
 ```bash

@@ -26,7 +26,8 @@
   "module": "lib/index.esm.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "example"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -78,7 +79,7 @@
     "typescript-eslint": "^8.45.0"
   },
   "peerDependencies": {
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
+    "react": ">=19",
+    "react-dom": ">=19"
   }
 }
