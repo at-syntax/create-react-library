@@ -1,9 +1,12 @@
 const js = require("@eslint/js");
 const react = require("eslint-plugin-react");
 const reactHooks = require("eslint-plugin-react-hooks");
-const prettier = require("eslint-config-prettier");
+const globals = require("globals");
+const {defineConfig} = require("eslint/config");
+const prettier = require("eslint-plugin-prettier/recommended");
+const myPrettierConfig = require("./prettier.config.cjs");
 
-module.exports = [
+module.exports = defineConfig(
   js.configs.recommended,
   {
     files: ["**/*.{js,jsx}"],
@@ -16,25 +19,9 @@ module.exports = [
         },
       },
       globals: {
-        // Browser globals
-        window: "readonly",
-        document: "readonly",
-        console: "readonly",
-        // Node.js globals
-        process: "readonly",
-        Buffer: "readonly",
-        __dirname: "readonly",
-        __filename: "readonly",
-        // Jest globals
-        describe: "readonly",
-        it: "readonly",
-        test: "readonly",
-        expect: "readonly",
-        beforeEach: "readonly",
-        afterEach: "readonly",
-        beforeAll: "readonly",
-        afterAll: "readonly",
-        jest: "readonly",
+        ...globals.browser,
+        ...globals.node,
+        ...globals.jest,
       },
     },
     plugins: {
@@ -44,6 +31,7 @@ module.exports = [
     rules: {
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
+      "prettier/prettier": ["warn", myPrettierConfig],
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
     },
@@ -54,4 +42,4 @@ module.exports = [
     },
   },
   prettier,
-];
+);
