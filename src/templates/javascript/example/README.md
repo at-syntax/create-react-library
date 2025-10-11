@@ -1,15 +1,17 @@
-# {{PACKAGE_NAME}} Example
+# {{%=PACKAGE_NAME%}} Example
 
-This is a simple React application that demonstrates how to use the `{{PACKAGE_NAME}}` library.
+This is a simple React application that demonstrates how to use the `{{%=PACKAGE_NAME%}}` library.
 
 ## Getting Started
 
 1. Install dependencies:
+
    ```bash
    npm install
    ```
 
 2. Start the development server:
+
    ```bash
    npm start
    ```

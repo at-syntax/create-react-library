@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: '{{%=PACKAGE_MANAGER%}}'
+    
+    - name: Install dependencies
+      run: {{%=PACKAGE_MANAGER%}} install
+    
+    - name: Run tests
+      run: {{%=PACKAGE_MANAGER%}} test
+    
+    - name: Build
+      run: {{%=PACKAGE_MANAGER%}} run build

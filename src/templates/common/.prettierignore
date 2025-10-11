@@ -5,10 +5,12 @@ node_modules/
 lib/
 dist/
 
+{{% if (options.language === "typescript") { -%}}
 # Generated files
 *.tsbuildinfo
 *.js.map
 *.d.ts.map
+{{% } -%}}
 
 # Logs
 *.log

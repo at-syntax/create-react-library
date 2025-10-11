@@ -1,26 +1,26 @@
-# {{PACKAGE_NAME}}
+# {{%=PACKAGE_NAME%}}
 
-{{DESCRIPTION}}
+{{%=DESCRIPTION%}}
 
 ## This package is crafted with [@atsyntax/create-react-library](https://www.npmjs.com/package/@atsyntax/create-react-library)
 
 ## Installation
 
 ```bash
-npm install {{PACKAGE_NAME}}
+npm install {{%=PACKAGE_NAME%}}
 ```
 
 ## Usage
 
 ```jsx
 import React from 'react';
-import MyComponent from '{{PACKAGE_NAME}}';
+import MyComponent from '{{%=PACKAGE_NAME%}}';
 
 function App() {
   return (
     <div>
       <MyComponent>
-        <p>Hello from {{PACKAGE_NAME}}!</p>
+        <p>Hello from {{%=PACKAGE_NAME%}}!</p>
       </MyComponent>
     </div>
   );
@@ -35,15 +35,15 @@ export default App;
 
 #### Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
+| Prop     | Type      | Default   | Description                            |
+| -------- | --------- | --------- | -------------------------------------- |
 | children | ReactNode | undefined | Content to render inside the component |
 
 ## Example
 
 Check out the `example/` directory for a complete React application demonstrating how to use this library:
 
-Note: Build you library first `yarn or npm build`
+Note: Build you library first `{{%=PACKAGE_MANAGER%}} run build`
 
 ```bash
 cd example
@@ -69,4 +69,4 @@ npm run build:watch
 
 ## License
 
-MIT © [{{AUTHOR_NAME}}]({{AUTHOR_URL}})
+MIT © [<%=AUTHOR_NAME%>]({{%=AUTHOR_URL%}})

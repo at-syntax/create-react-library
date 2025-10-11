@@ -1,6 +1,6 @@
-# {{PACKAGE_NAME}} TypeScript Example
+# {{%=PACKAGE_NAME%}} TypeScript Example
 
-This is a TypeScript React application that demonstrates how to use the `{{PACKAGE_NAME}}` library with full type safety.
+This is a TypeScript React application that demonstrates how to use the `{{%=PACKAGE_NAME%}}` library with full type safety.
 
 ## Getting Started
 

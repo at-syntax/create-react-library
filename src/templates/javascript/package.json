@@ -1,25 +1,25 @@
 {
-  "name": "{{PACKAGE_NAME}}",
+  "name": "{{%=PACKAGE_NAME%}}",
   "version": "1.0.0",
-  "description": "{{DESCRIPTION}}",
+  "description": "{{%=DESCRIPTION%}}",
   "keywords": [
     "react",
     "component",
     "library"
   ],
-  "homepage": "{{REPO_URL}}#readme",
+  "homepage": "{{%=REPO_URL%}}#readme",
   "bugs": {
-    "url": "{{REPO_URL}}/issues"
+    "url": "{{%=REPO_URL%}}/issues"
   },
   "repository": {
     "type": "git",
-    "url": "{{REPO_URL}}.git"
+    "url": "{{%=REPO_URL%}}.git"
   },
   "license": "MIT",
   "author": {
-    "name": "{{AUTHOR_NAME}}",
-    "email": "{{AUTHOR_EMAIL}}",
-    "url": "{{AUTHOR_URL}}"
+    "name": "{{%=AUTHOR_NAME%}}",
+    "email": "{{%=AUTHOR_EMAIL%}}",
+    "url": "{{%=AUTHOR_URL%}}"
   },
   "main": "lib/index.js",
   "module": "lib/index.esm.js",

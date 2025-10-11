@@ -1,5 +1,7 @@
 {
+{{% if (options.language === "typescript") { -%}}
   "typescript.tsdk": "node_modules/typescript/lib",
+{{% } -%}}
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "prettier.configPath": "prettier.config.cjs",
   "editor.formatOnSave": true,
@@ -8,6 +10,6 @@
   "eslint.run": "onSave",
   "git.pruneOnFetch": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
+    "source.fixAll.eslint": "explicit"
   }
 }

@@ -7,8 +7,6 @@ A CLI tool to quickly scaffold React libraries with TypeScript and JavaScript te
 This package is currently in **beta** and under active development. Upcoming versions will include:
 
 - More intuitive template generation
-- Additional templates for licenses
-- GitHub issue and pull request templates
 - Enhanced customization options
 
 Please report any issues or suggestions in our [GitHub repository](https://github.com/at-syntax/create-react-library/issues).

@@ -15,8 +15,8 @@ const MyComponent: React.FC<MyComponentProps> = ({
 }) => {
   return (
     <div className={`my-component ${className || ""}`} {...props}>
-      <h2>{{PACKAGE_NAME}}</h2>
-      <p>{{DESCRIPTION}}</p>
+      <h2>{{%=PACKAGE_NAME%}}</h2>
+      <p>{{%=DESCRIPTION%}}</p>
       {children}
     </div>
   );

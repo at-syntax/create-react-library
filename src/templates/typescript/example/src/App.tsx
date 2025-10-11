@@ -1,6 +1,6 @@
-import React from 'react';
-import MyComponent, { MyComponentProps } from '{{PACKAGE_NAME}}';
-import './App.css';
+import React from "react";
+import MyComponent, { MyComponentProps } from "{{%=PACKAGE_NAME%}}";
+import "./App.css";
 
 interface CustomButtonProps {
   onClick: () => void;
@@ -8,34 +8,30 @@ interface CustomButtonProps {
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({ onClick, children }) => (
-  <button onClick={onClick}>
-    {children}
-  </button>
+  <button onClick={onClick}>{children}</button>
 );
 
 const App: React.FC = () => {
   const handleButtonClick = (): void => {
-    alert('Hello from {{PACKAGE_NAME}}!');
+    alert("Hello from {{%=PACKAGE_NAME%}}!");
   };
 
   // Example of using the component with proper TypeScript typing
   const componentProps: MyComponentProps = {
-    className: 'custom-style',
+    className: "custom-style",
     children: (
       <div>
         <p>This content is passed as children with proper typing.</p>
-        <CustomButton onClick={handleButtonClick}>
-          Click me!
-        </CustomButton>
+        <CustomButton onClick={handleButtonClick}>Click me!</CustomButton>
       </div>
-    )
+    ),
   };
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>{{PACKAGE_NAME}} TypeScript Example</h1>
-        <p>This demonstrates the {{PACKAGE_NAME}} library with full TypeScript support.</p>
+        <h1>{{%=PACKAGE_NAME%}} TypeScript Example</h1>
+        <p>This demonstrates the {{%=PACKAGE_NAME%}} library with full TypeScript support.</p>
       </header>
       
       <main className="App-main">
@@ -66,6 +62,6 @@ const App: React.FC = () => {
       </main>
     </div>
   );
-}
+};
 
 export default App;

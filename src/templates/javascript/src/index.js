@@ -6,8 +6,8 @@ import React from "react";
 const MyComponent = ({ children, ...props }) => {
   return (
     <div className="my-component" {...props}>
-      <h2>{{PACKAGE_NAME}}</h2>
-      <p>{{DESCRIPTION}}</p>
+      <h2>{{%=PACKAGE_NAME%}}</h2>
+      <p>{{%=DESCRIPTION%}}</p>
       {children}
     </div>
   );

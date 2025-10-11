@@ -1,8 +1,8 @@
 {
-    "name": "{{PACKAGE_NAME}}-example",
+    "name": "{{%=PACKAGE_NAME%}}-example",
     "version": "1.0.0",
     "private": true,
-    "description": "Example usage of {{PACKAGE_NAME}}",
+    "description": "Example usage of {{%=PACKAGE_NAME%}}",
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
@@ -10,7 +10,7 @@
         "eject": "react-scripts eject"
     },
     "dependencies": {
-        "{{PACKAGE_NAME}}": "file:..",
+        "{{%=PACKAGE_NAME%}}": "file:..",
         "react": "^19.2.0",
         "react-dom": "^19.2.0",
         "react-scripts": "5.0.1"

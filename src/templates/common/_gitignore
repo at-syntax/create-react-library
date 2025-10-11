@@ -56,3 +56,8 @@ pids
 .env.development.local
 .env.test.local
 .env.production.local
+
+{{% if (options.language === "typescript") { -%}}
+# TypeScript
+*.tsbuildinfo
+{{% } -%}}

@@ -2,7 +2,7 @@ const js = require("@eslint/js");
 const react = require("eslint-plugin-react");
 const reactHooks = require("eslint-plugin-react-hooks");
 const globals = require("globals");
-const {defineConfig} = require("eslint/config");
+const { defineConfig } = require("eslint/config");
 const prettier = require("eslint-plugin-prettier/recommended");
 const myPrettierConfig = require("./prettier.config.cjs");
 
@@ -41,5 +41,5 @@ module.exports = defineConfig(
       },
     },
   },
-  prettier,
+  prettier
 );
