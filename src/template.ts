@@ -7,24 +7,43 @@ function renderTemplate(
   content: string,
   options: GenerateProjectOptions
 ): string {
-  return ejs.render(
-    content,
-    {
-      PACKAGE_NAME: options.slug,
-      DESCRIPTION: options.description,
-      AUTHOR_NAME: options.authorName || "",
-      AUTHOR_EMAIL: options.authorEmail || "",
-      AUTHOR_URL: options.authorUrl || "",
-      REPO_URL: options.repoUrl || "",
-      PACKAGE_MANAGER: options.packageManager,
-      // Expose the full options object for more complex templating
-      options: options,
-    },
-    {
-      openDelimiter: "{{",
-      closeDelimiter: "}}",
-    }
-  );
+  try {
+    return ejs.render(
+      content,
+      {
+        PACKAGE_NAME: options.slug,
+        DESCRIPTION: options.description,
+        AUTHOR_NAME: options.authorName || "",
+        AUTHOR_EMAIL: options.authorEmail || "",
+        AUTHOR_URL: options.authorUrl || "",
+        REPO_URL: options.repoUrl || "",
+        PACKAGE_MANAGER: options.packageManager,
+        // Expose the full options object for more complex templating
+        options: options,
+      },
+      {
+        openDelimiter: "{{",
+        closeDelimiter: "}}",
+      }
+    );
+  } catch (error) {
+    throw new Error("Failed to render template", {
+      cause: error,
+    });
+  }
+}
+
+function renderFileName(
+  fileName: string,
+  options: GenerateProjectOptions
+): string {
+  try {
+    return ejs.render(fileName.replace(/^\$/, ""), options);
+  } catch (error) {
+    throw new Error(`Failed to render file name: ${fileName}`, {
+      cause: error,
+    });
+  }
 }
 
 async function copyTemplateFiles(
@@ -37,10 +56,8 @@ async function copyTemplateFiles(
   for (const file of files) {
     const sourcePath = path.join(templatePath, file.name);
     // Rename special files back to their dot-prefixed names in the destination
-    let destName = file.name;
-    if (file.name === "_github") destName = ".github";
-    if (file.name === "_vscode") destName = ".vscode";
-    if (file.name === "_gitignore") destName = ".gitignore";
+    const destName = renderFileName(file.name, options);
+
     const destPath = path.join(targetPath, destName);
 
     if (file.isDirectory()) {
