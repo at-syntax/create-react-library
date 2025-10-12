@@ -5,10 +5,10 @@ node_modules/
 lib/
 dist/
 
-{{% if (options.language === "typescript") { -%}}
 # Generated files
-*.tsbuildinfo
 *.js.map
+{{% if (options.language === "typescript") { -%}}
+*.tsbuildinfo
 *.d.ts.map
 {{% } -%}}
 
