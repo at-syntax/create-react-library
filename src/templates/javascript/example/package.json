@@ -4,16 +4,10 @@
     "private": true,
     "description": "Example usage of {{%=PACKAGE_NAME%}}",
     "scripts": {
-        "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject"
-    },
-    "dependencies": {
-        "{{%=PACKAGE_NAME%}}": "file:..",
-        "react": "^19.2.0",
-        "react-dom": "^19.2.0",
-        "react-scripts": "5.0.1"
+        "eject": "react-scripts eject",
+        "start": "react-scripts start",
+        "test": "react-scripts test"
     },
     "browserslist": {
         "production": [
@@ -26,5 +20,11 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "dependencies": {
+        "{{%=PACKAGE_NAME%}}": "file:..",
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0",
+        "react-scripts": "5.0.1"
     }
 }

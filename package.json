@@ -49,10 +49,10 @@
     "lint": "eslint 'src/**/*.{ts,tsx}' --ignore-pattern 'src/templates/**'",
     "lint:fix": "eslint 'src/**/*.{ts,tsx}' --ignore-pattern 'src/templates/**' --fix",
     "prepublishOnly": "npm run build",
-    "publish": "npm publish --access public",
+    "publish": "npm publish",
     "test": "jest",
-    "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
     "type-check": "tsc --noEmit",
     "type-check:watch": "yarn type-check -- --watch"
   },
@@ -91,5 +91,9 @@
     "ts-jest": "^29.1.2",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.45.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

@@ -24,13 +24,13 @@
     "outDir": "lib",
     "declarationDir": "lib"
   },
-  "include": [
-    "src/**/*"
-  ],
   "exclude": [
     "node_modules",
     "lib",
     "**/*.test.*",
     "**/*.spec.*"
+  ],
+  "include": [
+    "src/**/*"
   ]
 }
