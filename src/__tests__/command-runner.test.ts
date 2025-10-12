@@ -1,5 +1,6 @@
 import { runCommand } from "../utils/command-runner";
 import { spawn, type ChildProcess } from "child_process";
+import { mockPlatform } from "./setup";
 
 jest.mock("child_process");
 
@@ -8,6 +9,11 @@ const mockSpawn = spawn as jest.MockedFunction<typeof spawn>;
 describe("command-runner", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  afterEach(() => {
+    // Restore original platform
+    mockPlatform(process.platform);
   });
 
   describe("runCommand", () => {
@@ -82,6 +88,90 @@ describe("command-runner", () => {
         stdio: "inherit",
         shell: true,
       });
+    });
+
+    it("should use cmd.exe on Windows platform", async () => {
+      mockPlatform("win32");
+
+      const mockChild = {
+        on: jest.fn((event, callback) => {
+          if (event === "close") {
+            callback(0);
+          }
+        }),
+      };
+
+      mockSpawn.mockReturnValue(mockChild as unknown as ChildProcess);
+
+      await runCommand("npm", ["install"]);
+
+      expect(mockSpawn).toHaveBeenCalledWith(
+        "cmd.exe",
+        ["/c", "npm", "install"],
+        {
+          cwd: undefined,
+          stdio: undefined,
+          shell: true,
+        }
+      );
+    });
+
+    it("should use original command on non-Windows platforms", async () => {
+      mockPlatform("darwin");
+
+      const mockChild = {
+        on: jest.fn((event, callback) => {
+          if (event === "close") {
+            callback(0);
+          }
+        }),
+      };
+
+      mockSpawn.mockReturnValue(mockChild as unknown as ChildProcess);
+
+      await runCommand("npm", ["install"]);
+
+      expect(mockSpawn).toHaveBeenCalledWith("npm", ["install"], {
+        cwd: undefined,
+        stdio: undefined,
+        shell: true,
+      });
+    });
+
+    it("should handle empty args array", async () => {
+      const mockChild = {
+        on: jest.fn((event, callback) => {
+          if (event === "close") {
+            callback(0);
+          }
+        }),
+      };
+
+      mockSpawn.mockReturnValue(mockChild as unknown as ChildProcess);
+
+      await runCommand("pwd", []);
+
+      expect(mockSpawn).toHaveBeenCalledWith("pwd", [], {
+        cwd: undefined,
+        stdio: undefined,
+        shell: true,
+      });
+    });
+
+    it("should include original command and args in error message", async () => {
+      const mockChild = {
+        on: jest.fn((event, callback) => {
+          if (event === "close") {
+            callback(1);
+          }
+        }),
+      };
+
+      mockSpawn.mockReturnValue(mockChild as unknown as ChildProcess);
+
+      await expect(runCommand("git", ["commit", "-m", "test"])).rejects.toThrow(
+        "git commit -m test failed with code 1"
+      );
     });
   });
 });

@@ -27,8 +27,8 @@ describe("commands", () => {
       await installDependencies("/test/path", "yarn");
 
       expect(mockRunCommand).toHaveBeenCalledWith(
-        "cmd.exe",
-        ["/c", "yarn", "install"],
+        "yarn",
+        ["install"],
         "/test/path"
       );
     });

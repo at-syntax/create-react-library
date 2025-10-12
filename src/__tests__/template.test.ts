@@ -151,11 +151,11 @@ describe("template", () => {
 
       // Create files with special directory names
       createTempFile(
-        "template/typescript/_github/workflows/ci.yml",
+        "template/typescript/$.github/workflows/ci.yml",
         "name: CI"
       );
-      createTempFile("template/typescript/_vscode/settings.json", "{}");
-      createTempFile("template/typescript/_gitignore", "node_modules");
+      createTempFile("template/typescript/$.vscode/settings.json", "{}");
+      createTempFile("template/typescript/$.gitignore", "node_modules");
 
       const options = {
         targetPath: targetDir,

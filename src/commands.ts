@@ -7,24 +7,23 @@ export async function installDependencies(
 ): Promise<void> {
   let command: string;
   let args: string[];
-  const isWin = process.platform === "win32";
 
   switch (packageManager) {
     case "yarn":
-      command = isWin ? "cmd.exe" : "yarn";
-      args = isWin ? ["/c", "yarn", "install"] : ["install"];
+      command = "yarn";
+      args = ["install"];
       break;
     case "pnpm":
-      command = isWin ? "cmd.exe" : "pnpm";
-      args = isWin ? ["/c", "pnpm", "install"] : ["install"];
+      command = "pnpm";
+      args = ["install"];
       break;
     case "bun":
-      command = isWin ? "cmd.exe" : "bun";
-      args = isWin ? ["/c", "bun", "install"] : ["install"];
+      command = "bun";
+      args = ["install"];
       break;
     default:
-      command = isWin ? "cmd.exe" : "npm";
-      args = isWin ? ["/c", "npm", "install"] : ["install"];
+      command = "npm";
+      args = ["install"];
       break;
   }
 
