@@ -1,10 +1,10 @@
-# create-react-library (BETA)
+# create-react-library
 
 A CLI tool to quickly scaffold React libraries with TypeScript and JavaScript templates.
 
 ## ⚠️ Important Notice
 
-This package is currently in **beta** and under active development. Upcoming versions will include:
+This package is under active development. Upcoming versions will include:
 
 - More intuitive template generation
 - Enhanced customization options
