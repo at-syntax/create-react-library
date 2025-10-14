@@ -24,8 +24,10 @@
   "license": "MIT",
   "author": "Saikat Samanta <contact@saikatsamanta.dev>",
   "exports": {
+    "types": "./lib/types/index.d.ts",
     "import": "./lib/tsc/index.js",
-    "require": "./lib/index.js"
+    "require": "./lib/index.js",
+    "default": "./lib/index.js"
   },
   "main": "lib/index.js",
   "module": "lib/tsc/index.js",
