@@ -112,7 +112,7 @@ function writeJsonFile(filePath, data) {
 
   try {
     // Write to temporary file first (atomic operation)
-    fs.writeFileSync(tempFile, JSON.stringify(data, null, 2) + "\n", "utf8");
+    fs.writeFileSync(tempFile, JSON.stringify(data, null, 2), "utf8");
 
     // Atomically move temp file to final location
     fs.renameSync(tempFile, filePath);
