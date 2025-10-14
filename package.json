@@ -48,6 +48,8 @@
     "format:check": "prettier --check 'src/**/*.{ts,tsx,json,md}'",
     "lint": "eslint 'src/**/*.{ts,tsx}' --ignore-pattern 'src/templates/**'",
     "lint:fix": "eslint 'src/**/*.{ts,tsx}' --ignore-pattern 'src/templates/**' --fix",
+    "prepack": "node ./scripts/package-manager.cjs",
+    "postpack": "node ./scripts/package-manager.cjs restore",
     "prepublishOnly": "npm run build",
     "publish": "npm publish",
     "test": "jest",
