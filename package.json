@@ -38,6 +38,7 @@
     "bin"
   ],
   "scripts": {
+    "audit": "npm audit",
     "build": "rimraf lib && yarn build:cjs && yarn build:esm && yarn build:types && yarn copy:templates",
     "build:minified": "rimraf lib && yarn build:cjs:minified && yarn build:esm:minified && yarn build:types && yarn copy:templates",
     "build:cjs": "babel --extensions .ts,.tsx src --out-dir lib --ignore '**/__tests__/**' --ignore '**/templates/**' --source-maps --env-name production",
