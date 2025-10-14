@@ -273,7 +273,7 @@ function restoreFromBackup() {
     fs.unlinkSync(BACKUP_FILE);
 
     console.log("✅ Successfully restored original package.json");
-    console.log(`�️  Removed backup file: ${BACKUP_FILE}`);
+    console.log(`🔴 Removed backup file: ${BACKUP_FILE}`);
   } catch (error) {
     logErrorAndExit(`Failed to restore from backup: ${error.message}`);
   }
