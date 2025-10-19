@@ -6,6 +6,7 @@ export interface GenerateProjectOptions {
   authorEmail?: string;
   authorUrl?: string;
   repoUrl?: string;
+  modules: string[];
   language: "javascript" | "typescript";
   packageManager: "npm" | "yarn" | "pnpm" | "bun";
 }
@@ -17,6 +18,7 @@ export type ArgName =
   | "author-email"
   | "author-url"
   | "repo-url"
+  | "modules"
   | "language"
   | "package-manager";
 
@@ -27,6 +29,7 @@ export type Answers = {
   authorEmail?: string;
   authorUrl?: string;
   repoUrl?: string;
+  modules: string[];
   language: "javascript" | "typescript";
   packageManager: "npm" | "yarn" | "pnpm" | "bun";
 };

@@ -29,6 +29,10 @@ export const args: Record<ArgName, Options> = {
     description: "URL for the repository",
     type: "string",
   },
+  modules: {
+    description: "Build support for the package",
+    type: "array",
+  },
   language: {
     description: "Language for the repository",
     type: "string",
@@ -117,11 +121,25 @@ export function getQuestions(initialAnswers: Partial<Answers>): Record<
         /^https?:\/\//.test(input) ||
         "Must be a valid URL if provided",
     },
+    modules: {
+      type: "multiselect",
+      name: "modules",
+      message: "What build support do you want for the package?",
+      choices: [
+        { title: "ESM/CJS", value: "esm", selected: true },
+        { title: "UMD", value: "umd" },
+        { title: "Standalone", value: "standalone" },
+      ],
+      min: 1,
+      initial: 0,
+      validate: input =>
+        input.length > 0 || "At least one build support must be selected",
+    },
     language: {
       type: "select",
       name: "language",
-      message: "Which language do you prefers?",
-      active: "javascript",
+      message: "Which language do you prefer?",
+      initial: 0,
       choices: [
         { title: "Javascript", value: "javascript" },
         { title: "Typescript", value: "typescript" },
@@ -131,7 +149,7 @@ export function getQuestions(initialAnswers: Partial<Answers>): Record<
       type: "select",
       name: "packageManager",
       message: "Which package manager would you like to use?",
-      active: "npm",
+      initial: 0,
       choices: [
         { title: "npm", value: "npm" },
         { title: "Yarn", value: "yarn" },

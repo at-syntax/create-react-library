@@ -91,6 +91,7 @@ async function create(argv: Arguments<any>) {
     authorEmail,
     authorUrl,
     repoUrl,
+    modules,
     language,
     packageManager,
   } = {
@@ -146,6 +147,7 @@ async function create(argv: Arguments<any>) {
       authorUrl,
       repoUrl,
       language,
+      modules,
       packageManager,
     });
 

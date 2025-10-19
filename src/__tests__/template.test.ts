@@ -72,6 +72,7 @@ describe("template", () => {
         authorEmail: "john@example.com",
         authorUrl: "https://johndoe.com",
         repoUrl: "https://github.com/johndoe/my-library",
+        modules: ["umd"],
         language: "typescript" as const,
         packageManager: "yarn" as const,
       };
@@ -123,6 +124,7 @@ describe("template", () => {
         authorEmail: "test@test.com",
         authorUrl: "",
         repoUrl: "",
+        modules: ["umd"],
         language: "typescript" as const,
         packageManager: "npm" as const,
       };
@@ -165,6 +167,7 @@ describe("template", () => {
         authorEmail: "test@test.com",
         authorUrl: "",
         repoUrl: "",
+        modules: ["umd"],
         language: "typescript" as const,
         packageManager: "npm" as const,
       };
@@ -206,6 +209,7 @@ describe("template", () => {
         authorEmail: "test@test.com",
         authorUrl: "",
         repoUrl: "",
+        modules: ["umd"],
         language: "typescript" as const,
         packageManager: "npm" as const,
       };

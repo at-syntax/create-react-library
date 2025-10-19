@@ -138,6 +138,7 @@ describe("index", () => {
         authorEmail: "john@example.com",
         authorUrl: "https://johndoe.com",
         repoUrl: "https://github.com/johndoe/my-lib",
+        modules: ["umd"],
         language: "typescript" as const,
         packageManager: "yarn" as const,
       };
